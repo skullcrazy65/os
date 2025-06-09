@@ -10,12 +10,12 @@ import LibIcon from '../../components/LibIcon';
 
 const useStyles = createStyles((theme) => ({
   container: {
-    width: 320,
+    width: 280,
     height: 'fit-content',
     backgroundColor: theme.colors.dark[5], // secondary-bg
     color: theme.colors.dark[0], // primary-text
-    padding: 16,
-    borderRadius: 12,
+    padding: 12,
+    borderRadius: 10,
     fontFamily: 'Inter, sans-serif',
     boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)',
     border: `1px solid ${theme.colors.dark[4]}`, // accent-bg border
@@ -31,32 +31,32 @@ const useStyles = createStyles((theme) => ({
       right: 0,
       height: '3px',
       background: 'linear-gradient(90deg, #10b981, #34d399)',
-      borderRadius: '12px 12px 0 0',
+      borderRadius: '10px 10px 0 0',
     }
   },
   title: {
     fontWeight: 600,
     lineHeight: 1.4,
-    fontSize: 15,
+    fontSize: 14,
     color: theme.colors.dark[0],
   },
   description: {
-    fontSize: 13,
+    fontSize: 12,
     color: theme.colors.dark[1], // secondary-text
     fontFamily: 'Inter, sans-serif',
     lineHeight: 1.5,
-    marginTop: 4,
+    marginTop: 2,
   },
   descriptionOnly: {
-    fontSize: 14,
+    fontSize: 13,
     color: theme.colors.dark[1],
     fontFamily: 'Inter, sans-serif',
     lineHeight: 1.5,
   },
   iconContainer: {
     background: 'rgba(16, 185, 129, 0.1)',
-    borderRadius: 8,
-    padding: 8,
+    borderRadius: 6,
+    padding: 6,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -174,13 +174,13 @@ const Notifications: React.FC = () => {
           }}
           className={`${classes.container}`}
         >
-          <Group noWrap spacing={14}>
+          <Group noWrap spacing={10}>
             {data.icon && (
               <Box className={classes.iconContainer}>
                 {data.showDuration ? (
                   <RingProgress
                     key={toastKey}
-                    size={42}
+                    size={36}
                     thickness={3}
                     sections={[{ value: 100, color: iconColor }]}
                     style={{ alignSelf: !data.alignIcon || data.alignIcon === 'center' ? 'center' : 'start' }}
@@ -199,7 +199,7 @@ const Notifications: React.FC = () => {
                           fixedWidth 
                           color={iconColor} 
                           animation={data.iconAnimation}
-                          size="lg"
+                          size="sm"
                         />
                       </Center>
                     }
@@ -210,13 +210,13 @@ const Notifications: React.FC = () => {
                     fixedWidth 
                     color={iconColor} 
                     animation={data.iconAnimation}
-                    size="lg"
+                    size="sm"
                     style={{ alignSelf: !data.alignIcon || data.alignIcon === 'center' ? 'center' : 'start' }}
                   />
                 )}
               </Box>
             )}
-            <Stack spacing={2} sx={{ flex: 1 }}>
+            <Stack spacing={1} sx={{ flex: 1 }}>
               {data.title && <Text className={classes.title}>{data.title}</Text>}
               {data.description && (
                 <ReactMarkdown
