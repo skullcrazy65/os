@@ -183,32 +183,35 @@ const Notifications: React.FC = () => {
             {data.icon && (
               <Box className={classes.iconContainer} sx={{ backgroundColor: iconBgColor }}>
                 {data.showDuration ? (
-                  <RingProgress
-                    key={toastKey}
-                    size={36}
-                    thickness={3}
-                    sections={[{ value: 100, color: iconColor }]}
-                    style={{ alignSelf: !data.alignIcon || data.alignIcon === 'center' ? 'center' : 'start' }}
-                    styles={{
-                      root: {
-                        '> svg > circle:nth-of-type(2)': {
-                          animation: `${durationCircle} linear forwards reverse`,
-                          animationDuration: `${duration}ms`,
-                        },
-                      },
-                    }}
-                    label={
-                      <Center>
-                        <LibIcon 
-                          icon={data.icon} 
-                          fixedWidth 
-                          color={iconColor} 
-                          animation={data.iconAnimation}
-                          size="sm"
-                        />
-                      </Center>
-                    }
-                  />
+                 <RingProgress
+  key={toastKey}
+  size={36}
+  thickness={3}
+  sections={[{ value: 100, color: iconColor }]}
+  style={{ alignSelf: !data.alignIcon || data.alignIcon === 'center' ? 'center' : 'start' }}
+  styles={{
+    root: data.showDuration
+      ? {
+          '> svg > circle:nth-of-type(2)': {
+            animation: `${durationCircle} linear forwards reverse`,
+            animationDuration: `${duration}ms`,
+          },
+        }
+      : {},
+  }}
+  label={
+    <Center>
+      <LibIcon 
+        icon={data.icon} 
+        fixedWidth 
+        color={iconColor} 
+        animation={data.iconAnimation}
+        size="sm"
+      />
+    </Center>
+  }
+/>
+
                 ) : (
                   <LibIcon 
                     icon={data.icon} 
