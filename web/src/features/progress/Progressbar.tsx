@@ -16,6 +16,7 @@ const useStyles = createStyles(() => ({
     justifyContent: 'center',
     pointerEvents: 'none',
     zIndex: 9999,
+    flexDirection: 'column',
   },
   container: {
     display: 'flex',
@@ -24,11 +25,11 @@ const useStyles = createStyles(() => ({
     backgroundColor: 'transparent',
   },
   labelText: {
-    color: '#ff1e47',
-    fontWeight: 800,
-    fontSize: 20,
+    color: '#1a2332',
+    fontWeight: 700,
+    fontSize: 14,
     fontFamily: 'Arial, sans-serif',
-    textShadow: '1px 1px 2px black',
+    marginBottom: 6,
   },
   barContainer: {
     display: 'flex',
@@ -58,7 +59,6 @@ const Progressbar: React.FC = () => {
     setVisible(true);
     setPercentage(0);
 
-    // Pokreni animaciju progres bara
     let start = performance.now();
     const tick = (now: number) => {
       const elapsed = now - start;
@@ -79,12 +79,12 @@ const Progressbar: React.FC = () => {
 
   return visible ? (
     <Box className={classes.wrapper}>
-      <Box className={classes.container}>
-        <ScaleFade visible={visible}>
-          <>
-            <Text className={classes.labelText}>
-              {label} {percentage}%
-            </Text>
+      <ScaleFade visible={visible}>
+        <>
+          <Text className={classes.labelText}>
+            {label} {percentage}%
+          </Text>
+          <Box className={classes.container}>
             <Box className={classes.barContainer}>
               {[...Array(totalSegments)].map((_, i) => (
                 <Box
@@ -96,9 +96,9 @@ const Progressbar: React.FC = () => {
                 />
               ))}
             </Box>
-          </>
-        </ScaleFade>
-      </Box>
+          </Box>
+        </>
+      </ScaleFade>
     </Box>
   ) : null;
 };
