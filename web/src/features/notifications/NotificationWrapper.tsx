@@ -55,7 +55,7 @@ const useStyles = createStyles((theme) => ({
   },
   iconContainer: {
     borderRadius: 1,
-    padding: 6,
+    padding: 3,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
