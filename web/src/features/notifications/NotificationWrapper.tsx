@@ -54,8 +54,11 @@ const useStyles = createStyles((theme) => ({
     lineHeight: 1.5,
   },
   iconContainer: {
-   
-  
+    borderRadius: 1,
+    padding: 6,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   }
 }));
 
