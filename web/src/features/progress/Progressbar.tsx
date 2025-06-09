@@ -10,16 +10,21 @@ const progressAnimation = keyframes({
   '100%': { width: '100%' }
 });
 
+const shimmerAnimation = keyframes({
+  '0%': { transform: 'translateX(-100%)' },
+  '100%': { transform: 'translateX(100%)' }
+});
+
 const useStyles = createStyles((theme) => ({
   container: {
-    width: 400,
-    height: 56,
-    borderRadius: 12,
-    backgroundColor: theme.colors.dark[5], // secondary-bg
+    width: 420,
+    height: 64,
+    borderRadius: 16,
+    backgroundColor: '#1a2332', // secondary-bg
     overflow: 'hidden',
-    border: `1px solid ${theme.colors.dark[4]}`, // accent-bg border
-    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)',
-    backdropFilter: 'blur(8px)',
+    border: '2px solid #243447', // accent-bg border
+    boxShadow: '0 12px 40px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
+    backdropFilter: 'blur(12px)',
     position: 'relative',
   },
   wrapper: {
@@ -33,45 +38,68 @@ const useStyles = createStyles((theme) => ({
   },
   bar: {
     height: '100%',
-    background: 'linear-gradient(90deg, #10b981, #34d399)',
-    borderRadius: 12,
+    background: 'linear-gradient(135deg, #10b981 0%, #34d399 50%, #10b981 100%)',
+    borderRadius: 16,
     position: 'relative',
+    boxShadow: 'inset 0 2px 4px rgba(255, 255, 255, 0.2), 0 0 20px rgba(16, 185, 129, 0.3)',
     
-    '&::after': {
+    '&::before': {
       content: '""',
       position: 'absolute',
       top: 0,
       left: 0,
       right: 0,
       bottom: 0,
-      background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)',
-      animation: 'shimmer 2s infinite',
+      background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)',
+      animation: `${shimmerAnimation} 2s infinite`,
+      borderRadius: 16,
+    },
+    
+    '&::after': {
+      content: '""',
+      position: 'absolute',
+      top: '2px',
+      left: '2px',
+      right: '2px',
+      height: '40%',
+      background: 'linear-gradient(180deg, rgba(255,255,255,0.4) 0%, transparent 100%)',
+      borderRadius: '14px 14px 0 0',
     }
   },
   labelWrapper: {
     position: 'absolute',
     display: 'flex',
-    width: 400,
-    height: 56,
+    width: 420,
+    height: 64,
     alignItems: 'center',
     justifyContent: 'center',
     zIndex: 2,
   },
   label: {
-    maxWidth: 380,
-    padding: 12,
+    maxWidth: 400,
+    padding: 16,
     textOverflow: 'ellipsis',
     overflow: 'hidden',
     whiteSpace: 'nowrap',
     fontSize: 16,
-    fontWeight: 500,
-    color: theme.colors.dark[0], // primary-text
-    textShadow: '0 2px 8px rgba(0, 0, 0, 0.5)',
+    fontWeight: 600,
+    color: '#ffffff', // primary-text
+    textShadow: '0 2px 8px rgba(0, 0, 0, 0.8), 0 0 20px rgba(16, 185, 129, 0.3)',
     fontFamily: 'Inter, sans-serif',
+    letterSpacing: '0.5px',
   },
-  '@keyframes shimmer': {
-    '0%': { transform: 'translateX(-100%)' },
-    '100%': { transform: 'translateX(100%)' }
+  backgroundPattern: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    background: `
+      radial-gradient(circle at 20% 50%, rgba(16, 185, 129, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 80% 50%, rgba(52, 211, 153, 0.1) 0%, transparent 50%),
+      linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.02) 50%, transparent 100%)
+    `,
+    borderRadius: 16,
   }
 }));
 
@@ -94,6 +122,7 @@ const Progressbar: React.FC = () => {
       <Box className={classes.wrapper}>
         <ScaleFade visible={visible} onExitComplete={() => fetchNui('progressComplete')}>
           <Box className={classes.container}>
+            <Box className={classes.backgroundPattern} />
             <Box
               className={classes.bar}
               onAnimationEnd={() => setVisible(false)}
