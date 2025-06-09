@@ -1,31 +1,19 @@
 import React from 'react';
-import { Box, createStyles, Text, keyframes } from '@mantine/core';
+import { Box, createStyles, Text } from '@mantine/core';
 import { useNuiEvent } from '../../hooks/useNuiEvent';
 import { fetchNui } from '../../utils/fetchNui';
 import ScaleFade from '../../transitions/ScaleFade';
 import type { ProgressbarProps } from '../../typings';
 
-const progressAnimation = keyframes({
-  '0%': { width: '0%' },
-  '100%': { width: '100%' }
-});
-
-const shimmerAnimation = keyframes({
-  '0%': { transform: 'translateX(-100%)' },
-  '100%': { transform: 'translateX(100%)' }
-});
-
 const useStyles = createStyles((theme) => ({
   container: {
     width: 420,
-    height: 64,
-    borderRadius: 16,
-    backgroundColor: '#1a2332', // secondary-bg
+    height: 48,
+    borderRadius: 24,
+    backgroundColor: '#243447', // accent-bg - tamno siva boja kao na slici
     overflow: 'hidden',
-    border: '1px solid #243447', // accent-bg border
-    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.6)',
-    backdropFilter: 'blur(12px)',
     position: 'relative',
+    boxShadow: '0 4px 16px rgba(0, 0, 0, 0.3)',
   },
   wrapper: {
     width: '100%',
@@ -38,28 +26,15 @@ const useStyles = createStyles((theme) => ({
   },
   bar: {
     height: '100%',
-    background: 'linear-gradient(90deg, #10b981, #34d399)',
-    borderRadius: 16,
-    position: 'relative',
-    boxShadow: '0 0 20px rgba(16, 185, 129, 0.4)',
-    
-    '&::after': {
-      content: '""',
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)',
-      animation: `${shimmerAnimation} 2s infinite`,
-      borderRadius: 16,
-    }
+    backgroundColor: '#10b981', // zelena boja kao na slici
+    borderRadius: 24,
+    transition: 'width 0.1s linear',
   },
   labelWrapper: {
     position: 'absolute',
     display: 'flex',
     width: 420,
-    height: 64,
+    height: 48,
     alignItems: 'center',
     justifyContent: 'space-between',
     zIndex: 2,
@@ -70,39 +45,42 @@ const useStyles = createStyles((theme) => ({
     textOverflow: 'ellipsis',
     overflow: 'hidden',
     whiteSpace: 'nowrap',
-    fontSize: 16,
-    fontWeight: 600,
-    color: '#ffffff', // primary-text
-    textShadow: '0 2px 8px rgba(0, 0, 0, 0.8)',
+    fontSize: 14,
+    fontWeight: 500,
+    color: '#ffffff',
     fontFamily: 'Inter, sans-serif',
   },
   percentage: {
-    fontSize: 16,
-    fontWeight: 700,
+    fontSize: 14,
+    fontWeight: 600,
     color: '#ffffff',
-    textShadow: '0 2px 8px rgba(0, 0, 0, 0.8)',
     fontFamily: 'Inter, sans-serif',
-    minWidth: '50px',
+    minWidth: '40px',
     textAlign: 'right',
   },
   progressDots: {
     position: 'absolute',
-    bottom: 8,
+    bottom: -16,
     left: 20,
     display: 'flex',
-    gap: 4,
+    gap: 6,
     zIndex: 3,
   },
   dot: {
-    width: 6,
-    height: 6,
+    width: 8,
+    height: 8,
     borderRadius: '50%',
     backgroundColor: 'rgba(255, 255, 255, 0.3)',
-    transition: 'all 0.3s ease',
+    transition: 'all 0.2s ease',
   },
   activeDot: {
     backgroundColor: '#10b981',
-    boxShadow: '0 0 8px rgba(16, 185, 129, 0.6)',
+  },
+  progressContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    gap: 16,
   }
 }));
 
@@ -113,7 +91,10 @@ const Progressbar: React.FC = () => {
   const [duration, setDuration] = React.useState(0);
   const [progress, setProgress] = React.useState(0);
 
-  useNuiEvent('progressCancel', () => setVisible(false));
+  useNuiEvent('progressCancel', () => {
+    setVisible(false);
+    setProgress(0);
+  });
 
   useNuiEvent<ProgressbarProps>('progress', (data) => {
     setVisible(true);
@@ -121,23 +102,28 @@ const Progressbar: React.FC = () => {
     setDuration(data.duration);
     setProgress(0);
     
-    // Animate progress percentage
-    const interval = setInterval(() => {
-      setProgress(prev => {
-        const newProgress = prev + (100 / (data.duration / 100));
-        if (newProgress >= 100) {
-          clearInterval(interval);
-          return 100;
-        }
-        return newProgress;
-      });
-    }, 100);
+    // Animiraj progress
+    const startTime = Date.now();
+    const animate = () => {
+      const elapsed = Date.now() - startTime;
+      const newProgress = Math.min((elapsed / data.duration) * 100, 100);
+      setProgress(newProgress);
+      
+      if (newProgress < 100) {
+        requestAnimationFrame(animate);
+      } else {
+        setTimeout(() => setVisible(false), 200);
+      }
+    };
+    
+    requestAnimationFrame(animate);
   });
 
   const renderDots = () => {
     const dots = [];
-    for (let i = 0; i < 8; i++) {
-      const isActive = (progress / 100) * 8 > i;
+    const totalDots = 8;
+    for (let i = 0; i < totalDots; i++) {
+      const isActive = (progress / 100) * totalDots > i;
       dots.push(
         <div 
           key={i} 
@@ -152,18 +138,18 @@ const Progressbar: React.FC = () => {
     <>
       <Box className={classes.wrapper}>
         <ScaleFade visible={visible} onExitComplete={() => fetchNui('progressComplete')}>
-          <Box className={classes.container}>
-            <Box
-              className={classes.bar}
-              onAnimationEnd={() => setVisible(false)}
-              sx={{
-                animation: `${progressAnimation} linear`,
-                animationDuration: `${duration}ms`,
-              }}
-            />
-            <Box className={classes.labelWrapper}>
-              <Text className={classes.label}>{label}</Text>
-              <Text className={classes.percentage}>{Math.round(progress)}%</Text>
+          <Box className={classes.progressContainer}>
+            <Box className={classes.container}>
+              <Box
+                className={classes.bar}
+                sx={{
+                  width: `${progress}%`,
+                }}
+              />
+              <Box className={classes.labelWrapper}>
+                <Text className={classes.label}>{label}</Text>
+                <Text className={classes.percentage}>{Math.round(progress)}%</Text>
+              </Box>
             </Box>
             <Box className={classes.progressDots}>
               {renderDots()}
