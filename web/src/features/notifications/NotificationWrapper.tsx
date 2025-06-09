@@ -185,7 +185,7 @@ const Notifications: React.FC = () => {
                 {data.showDuration ? (
                   <RingProgress
                     key={toastKey}
-                    size={36}
+                    size={16}
                     thickness={3}
                     sections={[{ value: 100, color: iconColor }]}
                     style={{ alignSelf: !data.alignIcon || data.alignIcon === 'center' ? 'center' : 'start' }}
