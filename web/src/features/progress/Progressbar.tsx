@@ -17,33 +17,32 @@ const stripeAnimation = keyframes({
 
 const useStyles = createStyles((theme) => ({
   container: {
-    width: '80vw',
-    height: 8,
+    width: 400,
+    height: 20,
     borderRadius: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    backgroundColor: '#2a2a2a',
     overflow: 'hidden',
-    border: 'none',
+    border: '1px solid #444',
     position: 'relative',
   },
   wrapper: {
     width: '100%',
-    height: '100vh',
+    height: '20%',
     display: 'flex',
-    alignItems: 'flex-end',
+    alignItems: 'center',
     justifyContent: 'center',
     bottom: 0,
     position: 'absolute',
-    paddingBottom: 20,
   },
   bar: {
     height: '100%',
     background: `
       repeating-linear-gradient(
         45deg,
-        #ff3333,
-        #ff3333 10px,
-        #cc2222 10px,
-        #cc2222 20px
+        #ff4757,
+        #ff4757 10px,
+        #ff3742 10px,
+        #ff3742 20px
       )
     `,
     position: 'relative',
@@ -52,25 +51,23 @@ const useStyles = createStyles((theme) => ({
   labelWrapper: {
     position: 'absolute',
     display: 'flex',
-    width: '80vw',
-    height: 8,
+    width: 400,
+    height: 20,
     alignItems: 'center',
     justifyContent: 'center',
     zIndex: 2,
-    top: -25,
   },
   label: {
-    maxWidth: '70vw',
+    maxWidth: 380,
     padding: 4,
     textOverflow: 'ellipsis',
     overflow: 'hidden',
     whiteSpace: 'nowrap',
-    fontSize: 14,
-    fontWeight: 500,
+    fontSize: 12,
+    fontWeight: 600,
     color: '#ffffff',
     textShadow: '1px 1px 2px rgba(0, 0, 0, 0.8)',
     fontFamily: 'Arial, sans-serif',
-    textAlign: 'center',
   },
 }));
 
@@ -93,9 +90,6 @@ const Progressbar: React.FC = () => {
       <Box className={classes.wrapper}>
         <ScaleFade visible={visible} onExitComplete={() => fetchNui('progressComplete')}>
           <Box className={classes.container}>
-            <Box className={classes.labelWrapper}>
-              <Text className={classes.label}>{label}</Text>
-            </Box>
             <Box
               className={classes.bar}
               onAnimationEnd={() => setVisible(false)}
@@ -104,6 +98,9 @@ const Progressbar: React.FC = () => {
                 animationDuration: `${duration}ms, 1s`,
               }}
             />
+            <Box className={classes.labelWrapper}>
+              <Text className={classes.label}>{label}</Text>
+            </Box>
           </Box>
         </ScaleFade>
       </Box>
