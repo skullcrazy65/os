@@ -23,14 +23,37 @@ const useStyles = createStyles((theme, params: { position?: TextUiPosition }) =>
   },
   container: {
     fontSize: 16,
-    padding: 12,
+    padding: 16,
     margin: 8,
-    backgroundColor: theme.colors.dark[6],
-    color: theme.colors.dark[0],
-    fontFamily: 'Roboto',
-    borderRadius: theme.radius.sm,
-    boxShadow: theme.shadows.sm,
+    backgroundColor: '#1a2332', // secondary-bg
+    color: '#ffffff', // primary-text
+    fontFamily: 'Inter, sans-serif',
+    borderRadius: 12,
+    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)',
+    border: '1px solid #243447', // accent-bg
+    backdropFilter: 'blur(8px)',
+    position: 'relative',
+    overflow: 'hidden',
+    
+    '&::before': {
+      content: '""',
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      height: '3px',
+      background: 'linear-gradient(90deg, #10b981, #34d399)', // accent-color gradient
+      borderRadius: '12px 12px 0 0',
+    }
   },
+  iconContainer: {
+    background: 'rgba(16, 185, 129, 0.1)', // accent-color with opacity
+    borderRadius: 8,
+    padding: 8,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  }
 }));
 
 const TextUI: React.FC = () => {
@@ -56,16 +79,18 @@ const TextUI: React.FC = () => {
           <Box style={data.style} className={classes.container}>
             <Group spacing={12}>
               {data.icon && (
-                <LibIcon
-                  icon={data.icon}
-                  fixedWidth
-                  size="lg"
-                  animation={data.iconAnimation}
-                  style={{
-                    color: data.iconColor,
-                    alignSelf: !data.alignIcon || data.alignIcon === 'center' ? 'center' : 'start',
-                  }}
-                />
+                <Box className={classes.iconContainer}>
+                  <LibIcon
+                    icon={data.icon}
+                    fixedWidth
+                    size="lg"
+                    animation={data.iconAnimation}
+                    style={{
+                      color: data.iconColor || '#10b981', // accent-color
+                      alignSelf: !data.alignIcon || data.alignIcon === 'center' ? 'center' : 'start',
+                    }}
+                  />
+                </Box>
               )}
               <ReactMarkdown components={MarkdownComponents} remarkPlugins={[remarkGfm]}>
                 {data.text}

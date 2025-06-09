@@ -16,6 +16,36 @@ import DateField from './components/fields/date';
 import TextareaField from './components/fields/textarea';
 import TimeField from './components/fields/time';
 import dayjs from 'dayjs';
+import { createStyles } from '@mantine/core';
+
+const useStyles = createStyles((theme) => ({
+  modal: {
+    backgroundColor: '#1a2332', // secondary-bg
+    border: '1px solid #243447', // accent-bg
+    borderRadius: 12,
+    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)',
+  },
+  title: {
+    textAlign: 'center',
+    width: '100%',
+    fontSize: 18,
+    color: '#ffffff', // primary-text
+    fontWeight: 600,
+  },
+  confirmButton: {
+    backgroundColor: '#10b981', // accent-color
+    '&:hover': {
+      backgroundColor: '#059669', // accent-color-dark
+    }
+  },
+  cancelButton: {
+    backgroundColor: '#243447', // accent-bg
+    color: '#94a3b8', // secondary-text
+    '&:hover': {
+      backgroundColor: '#2d4159', // hover-bg
+    }
+  }
+}));
 
 export type FormValues = {
   test: {
@@ -24,6 +54,7 @@ export type FormValues = {
 };
 
 const InputDialog: React.FC = () => {
+  const { classes } = useStyles();
   const [fields, setFields] = React.useState<InputProps>({
     heading: '',
     rows: [{ type: 'input', label: '' }],
@@ -104,12 +135,15 @@ const InputDialog: React.FC = () => {
         closeOnEscape={fields.options?.allowCancel !== false}
         closeOnClickOutside={false}
         size="xs"
-        styles={{ title: { textAlign: 'center', width: '100%', fontSize: 18 } }}
         title={fields.heading}
         withCloseButton={false}
         overlayOpacity={0.5}
         transition="fade"
         exitTransitionDuration={150}
+        classNames={{
+          modal: classes.modal,
+          title: classes.title,
+        }}
       >
         <form onSubmit={onSubmit}>
           <Stack>
@@ -154,14 +188,14 @@ const InputDialog: React.FC = () => {
             <Group position="right" spacing={10}>
               <Button
                 uppercase
-                variant="default"
+                className={classes.cancelButton}
                 onClick={() => handleClose()}
                 mr={3}
                 disabled={fields.options?.allowCancel === false}
               >
                 {locale.ui.cancel}
               </Button>
-              <Button uppercase variant="light" type="submit">
+              <Button uppercase className={classes.confirmButton} type="submit">
                 {locale.ui.confirm}
               </Button>
             </Group>

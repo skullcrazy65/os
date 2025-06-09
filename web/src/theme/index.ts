@@ -6,7 +6,7 @@ export const theme: MantineThemeOverride = {
   fontFamilyMonospace: 'JetBrains Mono, Fira Code, Monaco, Consolas, monospace',
   
   colors: {
-    // Server color scheme
+    // Server color scheme with your exact colors
     primary: ['#34d399', '#10b981', '#059669', '#047857', '#065f46', '#064e3b', '#022c22', '#021c15', '#01120b', '#000a05'],
     dark: [
       '#ffffff',    // primary-text
@@ -67,15 +67,15 @@ export const theme: MantineThemeOverride = {
     Modal: {
       styles: (theme) => ({
         modal: {
-          backgroundColor: theme.colors.dark[5],
-          border: `1px solid ${theme.colors.dark[4]}`,
+          backgroundColor: '#1a2332', // secondary-bg
+          border: '1px solid #243447', // accent-bg
         },
         header: {
-          backgroundColor: theme.colors.dark[5],
-          borderBottom: `1px solid ${theme.colors.dark[4]}`,
+          backgroundColor: '#1a2332', // secondary-bg
+          borderBottom: '1px solid #243447', // accent-bg
         },
         title: {
-          color: theme.colors.dark[0],
+          color: '#ffffff', // primary-text
           fontWeight: 600,
         }
       }),
@@ -83,12 +83,13 @@ export const theme: MantineThemeOverride = {
     Progress: {
       styles: (theme) => ({
         root: {
-          backgroundColor: theme.colors.dark[5],
+          backgroundColor: '#243447', // accent-bg
           borderRadius: theme.radius.sm,
           overflow: 'hidden',
         },
         bar: {
           transition: 'width 0.3s ease',
+          background: 'linear-gradient(90deg, #10b981, #34d399)', // accent-color gradient
         }
       }),
     }

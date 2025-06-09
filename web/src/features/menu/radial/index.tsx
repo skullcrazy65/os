@@ -17,32 +17,36 @@ const useStyles = createStyles((theme) => ({
     transform: 'translate(-50%, -50%)',
   },
   sector: {
-    fill: theme.colors.dark[6],
-    color: theme.colors.dark[0],
+    fill: '#243447', // accent-bg
+    color: '#ffffff', // primary-text
+    transition: 'all 0.2s ease',
 
     '&:hover': {
-      fill: theme.fn.primaryColor(),
+      fill: '#10b981', // accent-color
       cursor: 'pointer',
       '> g > text, > g > svg > path': {
         fill: '#fff',
       },
     },
     '> g > text': {
-      fill: theme.colors.dark[0],
+      fill: '#ffffff', // primary-text
       strokeWidth: 0,
     },
   },
   backgroundCircle: {
-    fill: theme.colors.dark[6],
+    fill: '#1a2332', // secondary-bg
+    stroke: '#243447', // accent-bg
+    strokeWidth: 2,
   },
   centerCircle: {
-    fill: theme.fn.primaryColor(),
+    fill: '#10b981', // accent-color
     color: '#fff',
-    stroke: theme.colors.dark[6],
+    stroke: '#243447', // accent-bg
     strokeWidth: 4,
+    transition: 'all 0.2s ease',
     '&:hover': {
       cursor: 'pointer',
-      fill: theme.colors[theme.primaryColor][theme.fn.primaryShade() - 1],
+      fill: '#059669', // accent-color-dark
     },
   },
   centerIconContainer: {
@@ -146,7 +150,7 @@ const RadialMenu: React.FC = () => {
       >
         <ScaleFade visible={visible}>
           <svg
-            style={{ overflow: 'visible' }}
+            style={{ overflow: 'visible', filter: 'drop-shadow(0 8px 32px rgba(0, 0, 0, 0.4))' }}
             width={`${newDimension}px`}
             height={`${newDimension}px`}
             viewBox="0 0 350 350"

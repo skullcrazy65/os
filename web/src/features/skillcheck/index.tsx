@@ -24,10 +24,11 @@ const useStyles = createStyles((theme, params: { difficultyOffset: number }) => 
     r: 50,
     width: 500,
     height: 500,
+    filter: 'drop-shadow(0 8px 32px rgba(0, 0, 0, 0.4))',
   },
   track: {
     fill: 'transparent',
-    stroke: theme.colors.dark[5],
+    stroke: '#243447', // accent-bg
     strokeWidth: 8,
     r: 50,
     cx: 250,
@@ -41,7 +42,7 @@ const useStyles = createStyles((theme, params: { difficultyOffset: number }) => 
   },
   skillArea: {
     fill: 'transparent',
-    stroke: theme.fn.primaryColor(),
+    stroke: '#10b981', // accent-color
     strokeWidth: 8,
     r: 50,
     cx: 250,
@@ -56,7 +57,7 @@ const useStyles = createStyles((theme, params: { difficultyOffset: number }) => 
     },
   },
   indicator: {
-    stroke: 'red',
+    stroke: '#f59e0b', // warning-color
     strokeWidth: 16,
     fill: 'transparent',
     r: 50,
@@ -76,20 +77,23 @@ const useStyles = createStyles((theme, params: { difficultyOffset: number }) => 
     left: '50%',
     top: '50%',
     transform: 'translate(-50%, -50%)',
-    backgroundColor: theme.colors.dark[5],
-    width: 25,
-    height: 25,
+    backgroundColor: '#1a2332', // secondary-bg
+    border: '1px solid #243447', // accent-bg
+    color: '#ffffff', // primary-text
+    width: 32,
+    height: 32,
     textAlign: 'center',
-    borderRadius: 5,
+    borderRadius: 8,
     fontSize: 16,
-    fontWeight: 500,
+    fontWeight: 600,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    boxShadow: '0 4px 16px rgba(0, 0, 0, 0.3)',
     '@media (min-height: 1440px)': {
-      width: 30,
-      height: 30,
-      fontSize: 22,
+      width: 36,
+      height: 36,
+      fontSize: 20,
     },
   },
 }));
