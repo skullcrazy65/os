@@ -24,7 +24,9 @@ const App: React.FC = () => {
     setClipboard(data);
   });
 
-  fetchNui('init');
+  if (!isEnvBrowser()) {
+    fetchNui('init');
+  }
 
   return (
     <MantineProvider withNormalizeCSS withGlobalStyles theme={{ ...theme, ...config }}>

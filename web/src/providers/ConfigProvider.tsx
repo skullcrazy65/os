@@ -1,6 +1,7 @@
 import { Context, createContext, useContext, useEffect, useState } from 'react';
 import { MantineColor } from '@mantine/core';
 import { fetchNui } from '../utils/fetchNui';
+import { isEnvBrowser } from '../utils/misc';
 
 interface Config {
   primaryColor: MantineColor;
@@ -21,7 +22,9 @@ const ConfigProvider: React.FC<{ children: React.ReactNode }> = ({ children }) =
   });
 
   useEffect(() => {
-    fetchNui<Config>('getConfig').then((data) => setConfig(data));
+    if (!isEnvBrowser()) {
+      fetchNui<Config>('getConfig').then((data) => setConfig(data));
+    }
   }, []);
 
   return <ConfigCtx.Provider value={{ config, setConfig }}>{children}</ConfigCtx.Provider>;

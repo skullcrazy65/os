@@ -22,11 +22,11 @@ const useStyles = createStyles((theme, params: { position: 'middle' | 'bottom'; 
     alignItems: 'center',
   },
   progress: {
-    '> svg > circle:nth-child(1)': {
+    '> svg > circle:nth-of-type(1)': {
       stroke: theme.colors.dark[5],
     },
     // Scuffed way of grabbing the first section and animating it
-    '> svg > circle:nth-child(2)': {
+    '> svg > circle:nth-of-type(2)': {
       transition: 'none',
       animation: `${progressCircle} linear forwards`,
       animationDuration: `${params.duration}ms`,
