@@ -14,7 +14,7 @@ const useStyles = createStyles((theme) => ({
     height: 'fit-content',
     backgroundColor: theme.colors.dark[5], // secondary-bg
     color: theme.colors.dark[0], // primary-text
-    padding: '8px 12px',
+    padding: '12px',
     borderRadius: 10,
     fontFamily: 'Inter, sans-serif',
     border: `1px solid ${theme.colors.dark[4]}`, // accent-bg border
