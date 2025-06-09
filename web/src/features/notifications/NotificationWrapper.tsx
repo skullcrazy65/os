@@ -10,31 +10,57 @@ import LibIcon from '../../components/LibIcon';
 
 const useStyles = createStyles((theme) => ({
   container: {
-    width: 300,
+    width: 320,
     height: 'fit-content',
-    backgroundColor: theme.colors.dark[6],
-    color: theme.colors.dark[0],
-    padding: 12,
-    borderRadius: theme.radius.sm,
-    fontFamily: 'Roboto',
-    boxShadow: theme.shadows.sm,
+    backgroundColor: theme.colors.dark[5], // secondary-bg
+    color: theme.colors.dark[0], // primary-text
+    padding: 16,
+    borderRadius: 12,
+    fontFamily: 'Inter, sans-serif',
+    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)',
+    border: `1px solid ${theme.colors.dark[4]}`, // accent-bg border
+    backdropFilter: 'blur(8px)',
+    position: 'relative',
+    overflow: 'hidden',
+    
+    '&::before': {
+      content: '""',
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      height: '3px',
+      background: 'linear-gradient(90deg, #10b981, #34d399)',
+      borderRadius: '12px 12px 0 0',
+    }
   },
   title: {
-    fontWeight: 500,
-    lineHeight: 'normal',
+    fontWeight: 600,
+    lineHeight: 1.4,
+    fontSize: 15,
+    color: theme.colors.dark[0],
   },
   description: {
-    fontSize: 12,
-    color: theme.colors.dark[2],
-    fontFamily: 'Roboto',
-    lineHeight: 'normal',
+    fontSize: 13,
+    color: theme.colors.dark[1], // secondary-text
+    fontFamily: 'Inter, sans-serif',
+    lineHeight: 1.5,
+    marginTop: 4,
   },
   descriptionOnly: {
     fontSize: 14,
-    color: theme.colors.dark[2],
-    fontFamily: 'Roboto',
-    lineHeight: 'normal',
+    color: theme.colors.dark[1],
+    fontFamily: 'Inter, sans-serif',
+    lineHeight: 1.5,
   },
+  iconContainer: {
+    background: 'rgba(16, 185, 129, 0.1)',
+    borderRadius: 8,
+    padding: 8,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  }
 }));
 
 const createAnimation = (from: string, to: string, visible: boolean) => keyframes({
@@ -49,11 +75,11 @@ const createAnimation = (from: string, to: string, visible: boolean) => keyframe
 });
 
 const getAnimation = (visible: boolean, position: string) => {
-  const animationOptions = visible ? '0.2s ease-out forwards' : '0.4s ease-in forwards'
+  const animationOptions = visible ? '0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards' : '0.2s ease-in forwards'
   let animation: { from: string; to: string };
 
   if (visible) {
-    animation = position.includes('bottom') ? { from: 'Y(30px)', to: 'Y(0px)' } : { from: 'Y(-30px)', to:'Y(0px)' };
+    animation = position.includes('bottom') ? { from: 'Y(40px)', to: 'Y(0px)' } : { from: 'Y(-40px)', to:'Y(0px)' };
   } else {
     if (position.includes('right')) {
       animation = { from: 'X(0px)', to: 'X(100%)' }
@@ -84,7 +110,7 @@ const Notifications: React.FC = () => {
     if (!data.title && !data.description) return;
 
     const toastId = data.id?.toString();
-    const duration = data.duration || 3000;
+    const duration = data.duration || 4000;
 
     let iconColor: string;
     let position = data.position || 'top-right';
@@ -112,7 +138,7 @@ const Notifications: React.FC = () => {
           data.icon = 'circle-check';
           break;
         case 'warning':
-          data.icon = 'circle-exclamation';
+          data.icon = 'triangle-exclamation';
           break;
         default:
           data.icon = 'circle-info';
@@ -123,16 +149,16 @@ const Notifications: React.FC = () => {
     if (!data.iconColor) {
       switch (data.type) {
         case 'error':
-          iconColor = 'red.6';
+          iconColor = '#ef4444';
           break;
         case 'success':
-          iconColor = 'teal.6';
+          iconColor = '#10b981';
           break;
         case 'warning':
-          iconColor = 'yellow.6';
+          iconColor = '#f59e0b';
           break;
         default:
-          iconColor = 'blue.6';
+          iconColor = '#10b981';
           break;
       }
     } else {
@@ -148,14 +174,14 @@ const Notifications: React.FC = () => {
           }}
           className={`${classes.container}`}
         >
-          <Group noWrap spacing={12}>
+          <Group noWrap spacing={14}>
             {data.icon && (
-              <>
+              <Box className={classes.iconContainer}>
                 {data.showDuration ? (
                   <RingProgress
                     key={toastKey}
-                    size={38}
-                    thickness={2}
+                    size={42}
+                    thickness={3}
                     sections={[{ value: 100, color: iconColor }]}
                     style={{ alignSelf: !data.alignIcon || data.alignIcon === 'center' ? 'center' : 'start' }}
                     styles={{
@@ -164,36 +190,33 @@ const Notifications: React.FC = () => {
                           animation: `${durationCircle} linear forwards reverse`,
                           animationDuration: `${duration}ms`,
                         },
-                        margin: -3,
                       },
                     }}
                     label={
                       <Center>
-                        <ThemeIcon
-                          color={iconColor}
-                          radius="xl"
-                          size={32}
-                          variant={tinycolor(iconColor).getAlpha() < 0 ? undefined : 'light'}
-                        >
-                          <LibIcon icon={data.icon} fixedWidth color={iconColor} animation={data.iconAnimation} />
-                        </ThemeIcon>
+                        <LibIcon 
+                          icon={data.icon} 
+                          fixedWidth 
+                          color={iconColor} 
+                          animation={data.iconAnimation}
+                          size="lg"
+                        />
                       </Center>
                     }
                   />
                 ) : (
-                  <ThemeIcon
-                    color={iconColor}
-                    radius="xl"
-                    size={32}
-                    variant={tinycolor(iconColor).getAlpha() < 0 ? undefined : 'light'}
+                  <LibIcon 
+                    icon={data.icon} 
+                    fixedWidth 
+                    color={iconColor} 
+                    animation={data.iconAnimation}
+                    size="lg"
                     style={{ alignSelf: !data.alignIcon || data.alignIcon === 'center' ? 'center' : 'start' }}
-                  >
-                    <LibIcon icon={data.icon} fixedWidth color={iconColor} animation={data.iconAnimation} />
-                  </ThemeIcon>
+                  />
                 )}
-              </>
+              </Box>
             )}
-            <Stack spacing={0}>
+            <Stack spacing={2} sx={{ flex: 1 }}>
               {data.title && <Text className={classes.title}>{data.title}</Text>}
               {data.description && (
                 <ReactMarkdown

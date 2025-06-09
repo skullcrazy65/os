@@ -22,31 +22,49 @@ const useStyles = createStyles((theme, params: { position: 'middle' | 'bottom'; 
     alignItems: 'center',
   },
   progress: {
+    filter: 'drop-shadow(0 4px 16px rgba(0, 0, 0, 0.3))',
+    
     '> svg > circle:nth-of-type(1)': {
-      stroke: theme.colors.dark[5],
+      stroke: theme.colors.dark[5], // secondary-bg
     },
     // Scuffed way of grabbing the first section and animating it
     '> svg > circle:nth-of-type(2)': {
       transition: 'none',
       animation: `${progressCircle} linear forwards`,
       animationDuration: `${params.duration}ms`,
+      stroke: 'url(#gradient)',
     },
   },
   value: {
     textAlign: 'center',
-    fontFamily: 'roboto-mono',
-    textShadow: theme.shadows.sm,
-    color: theme.colors.gray[3],
+    fontFamily: 'Inter, monospace',
+    textShadow: '0 2px 8px rgba(0, 0, 0, 0.5)',
+    color: theme.colors.dark[0], // primary-text
+    fontSize: 18,
+    fontWeight: 600,
   },
   label: {
     textAlign: 'center',
-    textShadow: theme.shadows.sm,
-    color: theme.colors.gray[3],
+    textShadow: '0 2px 8px rgba(0, 0, 0, 0.5)',
+    color: theme.colors.dark[1], // secondary-text
     height: 25,
+    fontSize: 14,
+    fontWeight: 500,
+    fontFamily: 'Inter, sans-serif',
   },
   wrapper: {
     marginTop: params.position === 'middle' ? 25 : undefined,
+    padding: 20,
+    borderRadius: 16,
+    backgroundColor: 'rgba(15, 20, 25, 0.8)',
+    backdropFilter: 'blur(8px)',
+    border: `1px solid ${theme.colors.dark[4]}`,
   },
+  gradient: {
+    position: 'absolute',
+    width: 0,
+    height: 0,
+  }
 }));
 
 const CircleProgressbar: React.FC = () => {
@@ -85,10 +103,18 @@ const CircleProgressbar: React.FC = () => {
       <Stack spacing={0} className={classes.container}>
         <ScaleFade visible={visible} onExitComplete={() => fetchNui('progressComplete')}>
           <Stack spacing={0} align="center" className={classes.wrapper}>
+            <svg className={classes.gradient}>
+              <defs>
+                <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="#10b981" />
+                  <stop offset="100%" stopColor="#34d399" />
+                </linearGradient>
+              </defs>
+            </svg>
             <RingProgress
-              size={90}
-              thickness={7}
-              sections={[{ value: 0, color: theme.primaryColor }]}
+              size={110}
+              thickness={8}
+              sections={[{ value: 0, color: '#10b981' }]}
               onAnimationEnd={() => setVisible(false)}
               className={classes.progress}
               label={<Text className={classes.value}>{value}%</Text>}

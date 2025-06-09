@@ -10,11 +10,13 @@ import LibIcon from '../../../components/LibIcon';
 
 const useStyles = createStyles((theme, params: { position?: MenuPosition; itemCount: number; selected: number }) => ({
   tooltip: {
-    backgroundColor: theme.colors.dark[6],
-    color: theme.colors.dark[2],
-    borderRadius: theme.radius.sm,
+    backgroundColor: theme.colors.dark[5], // secondary-bg
+    color: theme.colors.dark[1], // secondary-text
+    borderRadius: 8,
     maxWidth: 350,
     whiteSpace: 'normal',
+    border: `1px solid ${theme.colors.dark[4]}`, // accent-bg border
+    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)',
   },
   container: {
     position: 'absolute',
@@ -26,28 +28,35 @@ const useStyles = createStyles((theme, params: { position?: MenuPosition; itemCo
     right: params.position === 'top-right' || params.position === 'bottom-right' ? 1 : undefined,
     left: params.position === 'bottom-left' ? 1 : undefined,
     bottom: params.position === 'bottom-left' || params.position === 'bottom-right' ? 1 : undefined,
-    fontFamily: 'Roboto',
-    width: 384,
+    fontFamily: 'Inter, sans-serif',
+    width: 400,
   },
   buttonsWrapper: {
     height: 'fit-content',
-    maxHeight: 415,
+    maxHeight: 440,
     overflow: 'hidden',
-    borderRadius: params.itemCount <= 6 || params.selected === params.itemCount - 1 ? theme.radius.md : undefined,
-    backgroundColor: theme.colors.dark[8],
-    borderTopLeftRadius: 0,
-    borderTopRightRadius: 0,
+    borderRadius: params.itemCount <= 6 || params.selected === params.itemCount - 1 ? 12 : '12px 12px 0 0',
+    backgroundColor: theme.colors.dark[5], // secondary-bg
+    border: `1px solid ${theme.colors.dark[4]}`, // accent-bg border
+    borderTop: 'none',
+    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)',
+    backdropFilter: 'blur(8px)',
   },
   scrollArrow: {
-    backgroundColor: theme.colors.dark[8],
+    backgroundColor: theme.colors.dark[5], // secondary-bg
     textAlign: 'center',
-    borderBottomLeftRadius: theme.radius.md,
-    borderBottomRightRadius: theme.radius.md,
-    height: 25,
+    borderBottomLeftRadius: 12,
+    borderBottomRightRadius: 12,
+    height: 28,
+    border: `1px solid ${theme.colors.dark[4]}`, // accent-bg border
+    borderTop: 'none',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   scrollArrowIcon: {
-    color: theme.colors.dark[2],
-    fontSize: 20,
+    color: theme.colors.dark[1], // secondary-text
+    fontSize: 16,
   },
 }));
 
@@ -219,7 +228,7 @@ const ListMenu: React.FC = () => {
             <Header title={menu.title} />
             <Box className={classes.buttonsWrapper} onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => moveMenu(e)}>
               <FocusTrap active={visible}>
-                <Stack spacing={8} p={8} sx={{ overflowY: 'scroll' }}>
+                <Stack spacing={6} p={10} sx={{ overflowY: 'scroll' }}>
                   {menu.items.map((item, index) => (
                     <React.Fragment key={`menu-item-${index}`}>
                       {item.label && (

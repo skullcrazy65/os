@@ -1,17 +1,26 @@
 import React from 'react';
-import { Box, createStyles, Text } from '@mantine/core';
+import { Box, createStyles, Text, keyframes } from '@mantine/core';
 import { useNuiEvent } from '../../hooks/useNuiEvent';
 import { fetchNui } from '../../utils/fetchNui';
 import ScaleFade from '../../transitions/ScaleFade';
 import type { ProgressbarProps } from '../../typings';
 
+const progressAnimation = keyframes({
+  '0%': { width: '0%' },
+  '100%': { width: '100%' }
+});
+
 const useStyles = createStyles((theme) => ({
   container: {
-    width: 350,
-    height: 45,
-    borderRadius: theme.radius.sm,
-    backgroundColor: theme.colors.dark[5],
+    width: 400,
+    height: 56,
+    borderRadius: 12,
+    backgroundColor: theme.colors.dark[5], // secondary-bg
     overflow: 'hidden',
+    border: `1px solid ${theme.colors.dark[4]}`, // accent-bg border
+    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)',
+    backdropFilter: 'blur(8px)',
+    position: 'relative',
   },
   wrapper: {
     width: '100%',
@@ -24,26 +33,46 @@ const useStyles = createStyles((theme) => ({
   },
   bar: {
     height: '100%',
-    backgroundColor: theme.colors[theme.primaryColor][theme.fn.primaryShade()],
+    background: 'linear-gradient(90deg, #10b981, #34d399)',
+    borderRadius: 12,
+    position: 'relative',
+    
+    '&::after': {
+      content: '""',
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)',
+      animation: 'shimmer 2s infinite',
+    }
   },
   labelWrapper: {
     position: 'absolute',
     display: 'flex',
-    width: 350,
-    height: 45,
+    width: 400,
+    height: 56,
     alignItems: 'center',
     justifyContent: 'center',
+    zIndex: 2,
   },
   label: {
-    maxWidth: 350,
-    padding: 8,
+    maxWidth: 380,
+    padding: 12,
     textOverflow: 'ellipsis',
     overflow: 'hidden',
     whiteSpace: 'nowrap',
-    fontSize: 20,
-    color: theme.colors.gray[3],
-    textShadow: theme.shadows.sm,
+    fontSize: 16,
+    fontWeight: 500,
+    color: theme.colors.dark[0], // primary-text
+    textShadow: '0 2px 8px rgba(0, 0, 0, 0.5)',
+    fontFamily: 'Inter, sans-serif',
   },
+  '@keyframes shimmer': {
+    '0%': { transform: 'translateX(-100%)' },
+    '100%': { transform: 'translateX(100%)' }
+  }
 }));
 
 const Progressbar: React.FC = () => {
@@ -69,13 +98,12 @@ const Progressbar: React.FC = () => {
               className={classes.bar}
               onAnimationEnd={() => setVisible(false)}
               sx={{
-                animation: 'progress-bar linear',
+                animation: `${progressAnimation} linear`,
                 animationDuration: `${duration}ms`,
               }}
-            >
-              <Box className={classes.labelWrapper}>
-                <Text className={classes.label}>{label}</Text>
-              </Box>
+            />
+            <Box className={classes.labelWrapper}>
+              <Text className={classes.label}>{label}</Text>
             </Box>
           </Box>
         </ScaleFade>

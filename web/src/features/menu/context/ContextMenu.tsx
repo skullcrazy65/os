@@ -18,31 +18,57 @@ const useStyles = createStyles((theme) => ({
     position: 'absolute',
     top: '15%',
     right: '25%',
-    width: 320,
+    width: 340,
     height: 580,
   },
   header: {
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 10,
-    gap: 6,
+    marginBottom: 12,
+    gap: 8,
   },
   titleContainer: {
-    borderRadius: 4,
+    borderRadius: 8,
     flex: '1 85%',
-    backgroundColor: theme.colors.dark[6],
+    backgroundColor: theme.colors.dark[5], // secondary-bg
+    border: `1px solid ${theme.colors.dark[4]}`, // accent-bg border
+    backdropFilter: 'blur(8px)',
   },
   titleText: {
-    color: theme.colors.dark[0],
-    padding: 6,
+    color: theme.colors.dark[0], // primary-text
+    padding: 12,
     textAlign: 'center',
+    fontWeight: 600,
+    fontSize: 16,
+    fontFamily: 'Inter, sans-serif',
   },
   buttonsContainer: {
     height: 560,
     overflowY: 'scroll',
+    backgroundColor: theme.colors.dark[5], // secondary-bg
+    borderRadius: 12,
+    border: `1px solid ${theme.colors.dark[4]}`, // accent-bg border
+    backdropFilter: 'blur(8px)',
+    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)',
+    padding: 8,
+    
+    '&::-webkit-scrollbar': {
+      width: 6,
+    },
+    '&::-webkit-scrollbar-track': {
+      background: theme.colors.dark[6],
+      borderRadius: 3,
+    },
+    '&::-webkit-scrollbar-thumb': {
+      background: theme.colors.dark[4],
+      borderRadius: 3,
+      '&:hover': {
+        background: theme.colors.dark[3],
+      }
+    }
   },
   buttonsFlexWrapper: {
-    gap: 3,
+    gap: 6,
   },
 }));
 

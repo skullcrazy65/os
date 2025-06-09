@@ -4,19 +4,37 @@ import React from 'react';
 const useStyles = createStyles((theme) => ({
   container: {
     textAlign: 'center',
-    borderTopLeftRadius: theme.radius.md,
-    borderTopRightRadius: theme.radius.md,
-    backgroundColor: theme.colors.dark[6],
-    height: 60,
-    width: 384,
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12,
+    backgroundColor: theme.colors.dark[5], // secondary-bg
+    border: `1px solid ${theme.colors.dark[4]}`, // accent-bg border
+    height: 64,
+    width: 400,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)',
+    backdropFilter: 'blur(8px)',
+    position: 'relative',
+    
+    '&::before': {
+      content: '""',
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      height: '3px',
+      background: 'linear-gradient(90deg, #10b981, #34d399)',
+      borderRadius: '12px 12px 0 0',
+    }
   },
   heading: {
-    fontSize: 24,
+    fontSize: 18,
     textTransform: 'uppercase',
-    fontWeight: 500,
+    fontWeight: 600,
+    color: theme.colors.dark[0], // primary-text
+    fontFamily: 'Inter, sans-serif',
+    letterSpacing: '0.5px',
   },
 }));
 

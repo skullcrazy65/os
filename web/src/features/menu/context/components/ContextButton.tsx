@@ -21,58 +21,79 @@ const useStyles = createStyles((theme, params: { disabled?: boolean; readOnly?: 
   },
   label: {
     width: '100%',
-    color: params.disabled ? theme.colors.dark[3] : theme.colors.dark[0],
+    color: params.disabled ? theme.colors.dark[2] : theme.colors.dark[0], // primary-text
     whiteSpace: 'pre-wrap',
   },
   button: {
     height: 'fit-content',
     width: '100%',
-    padding: 10,
+    padding: 12,
+    backgroundColor: theme.colors.dark[4], // accent-bg
+    border: `1px solid ${theme.colors.dark[3]}`, // hover-bg border
+    borderRadius: 8,
+    transition: 'all 0.2s ease',
+    
     '&:hover': {
-      backgroundColor: params.readOnly ? theme.colors.dark[6] : undefined,
+      backgroundColor: params.readOnly ? theme.colors.dark[4] : theme.colors.dark[3], // hover-bg
       cursor: params.readOnly ? 'unset' : 'pointer',
+      transform: params.readOnly ? 'unset' : 'translateY(-1px)',
+      boxShadow: params.readOnly ? 'unset' : '0 4px 16px rgba(0, 0, 0, 0.3)',
     },
     '&:active': {
-      transform: params.readOnly ? 'unset' : undefined,
+      transform: params.readOnly ? 'unset' : 'translateY(0px)',
     },
   },
   iconImage: {
-    maxWidth: '25px',
+    maxWidth: '28px',
+    borderRadius: 4,
   },
   description: {
-    color: params.disabled ? theme.colors.dark[3] : theme.colors.dark[2],
+    color: params.disabled ? theme.colors.dark[2] : theme.colors.dark[1], // secondary-text
     fontSize: 12,
+    lineHeight: 1.4,
   },
   dropdown: {
-    padding: 10,
-    color: theme.colors.dark[0],
+    padding: 12,
+    color: theme.colors.dark[0], // primary-text
     fontSize: 14,
-    maxWidth: 256,
+    maxWidth: 280,
     width: 'fit-content',
-    border: 'none',
+    border: `1px solid ${theme.colors.dark[4]}`, // accent-bg border
+    backgroundColor: theme.colors.dark[5], // secondary-bg
+    borderRadius: 8,
+    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)',
+    backdropFilter: 'blur(8px)',
   },
   buttonStack: {
-    gap: 4,
+    gap: 6,
     flex: '1',
   },
   buttonGroup: {
-    gap: 4,
+    gap: 8,
     flexWrap: 'nowrap',
   },
   buttonIconContainer: {
-    width: 25,
-    height: 25,
+    width: 28,
+    height: 28,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: 'rgba(16, 185, 129, 0.1)',
+    borderRadius: 6,
+    display: 'flex',
   },
   buttonTitleText: {
     overflowWrap: 'break-word',
+    fontWeight: 500,
+    fontSize: 14,
   },
   buttonArrowContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    width: 25,
-    height: 25,
+    width: 28,
+    height: 28,
+    backgroundColor: 'rgba(148, 163, 184, 0.1)',
+    borderRadius: 6,
+    display: 'flex',
   },
 }));
 
@@ -115,8 +136,8 @@ const ContextButton: React.FC<{
                           <LibIcon
                             icon={button.icon as IconProp}
                             fixedWidth
-                            size="lg"
-                            style={{ color: button.iconColor }}
+                            size="sm"
+                            style={{ color: button.iconColor || '#10b981' }}
                             animation={button.iconAnimation}
                           />
                         )}
@@ -133,19 +154,32 @@ const ContextButton: React.FC<{
                   </Text>
                 )}
                 {button.progress !== undefined && (
-                  <Progress value={button.progress} size="sm" color={button.colorScheme || 'dark.3'} />
+                  <Progress 
+                    value={button.progress} 
+                    size="sm" 
+                    color={button.colorScheme || '#10b981'}
+                    styles={(theme) => ({
+                      root: { 
+                        backgroundColor: theme.colors.dark[6],
+                        borderRadius: 4,
+                      },
+                      bar: {
+                        borderRadius: 4,
+                      }
+                    })}
+                  />
                 )}
               </Stack>
               {(button.menu || button.arrow) && button.arrow !== false && (
                 <Stack className={classes.buttonArrowContainer}>
-                  <LibIcon icon="chevron-right" fixedWidth />
+                  <LibIcon icon="chevron-right" fixedWidth size="sm" style={{ color: '#94a3b8' }} />
                 </Stack>
               )}
             </Group>
           </Button>
         </HoverCard.Target>
         <HoverCard.Dropdown className={classes.dropdown}>
-          {button.image && <Image src={button.image} />}
+          {button.image && <Image src={button.image} radius={6} />}
           {Array.isArray(button.metadata) ? (
             button.metadata.map(
               (
@@ -153,7 +187,7 @@ const ContextButton: React.FC<{
                 index: number
               ) => (
                 <>
-                  <Text key={`context-metadata-${index}`}>
+                  <Text key={`context-metadata-${index}`} size="sm">
                     {typeof metadata === 'string' ? `${metadata}` : `${metadata.label}: ${metadata?.value ?? ''}`}
                   </Text>
 
@@ -161,7 +195,17 @@ const ContextButton: React.FC<{
                     <Progress
                       value={metadata.progress}
                       size="sm"
-                      color={metadata.colorScheme || button.colorScheme || 'dark.3'}
+                      color={metadata.colorScheme || button.colorScheme || '#10b981'}
+                      styles={(theme) => ({
+                        root: { 
+                          backgroundColor: theme.colors.dark[6],
+                          borderRadius: 4,
+                          marginTop: 4,
+                        },
+                        bar: {
+                          borderRadius: 4,
+                        }
+                      })}
                     />
                   )}
                 </>
@@ -171,7 +215,7 @@ const ContextButton: React.FC<{
             <>
               {typeof button.metadata === 'object' &&
                 Object.entries(button.metadata).map((metadata: { [key: string]: any }, index) => (
-                  <Text key={`context-metadata-${index}`}>
+                  <Text key={`context-metadata-${index}`} size="sm">
                     {metadata[0]}: {metadata[1]}
                   </Text>
                 ))}
