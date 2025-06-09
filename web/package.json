@@ -30,6 +30,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+    "dev": "vite",
     "start": "vite",
     "start:game": "vite build --watch",
     "build": "tsc && vite build",
