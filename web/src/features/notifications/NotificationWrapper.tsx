@@ -10,11 +10,11 @@ import LibIcon from '../../components/LibIcon';
 
 const useStyles = createStyles((theme) => ({
   container: {
-    width: 280,
+    width: 320,
     height: 'fit-content',
     backgroundColor: theme.colors.dark[5], // secondary-bg
     color: theme.colors.dark[0], // primary-text
-    padding: 12,
+    padding: '8px 12px',
     borderRadius: 10,
     fontFamily: 'Inter, sans-serif',
     boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)',
@@ -54,7 +54,6 @@ const useStyles = createStyles((theme) => ({
     lineHeight: 1.5,
   },
   iconContainer: {
-    background: 'rgba(16, 185, 129, 0.1)',
     borderRadius: 6,
     padding: 6,
     display: 'flex',
@@ -113,6 +112,7 @@ const Notifications: React.FC = () => {
     const duration = data.duration || 4000;
 
     let iconColor: string;
+    let iconBgColor: string;
     let position = data.position || 'top-right';
 
     data.showDuration = data.showDuration !== undefined ? data.showDuration : true;
@@ -150,19 +150,24 @@ const Notifications: React.FC = () => {
       switch (data.type) {
         case 'error':
           iconColor = '#ef4444';
+          iconBgColor = 'rgba(239, 68, 68, 0.1)';
           break;
         case 'success':
           iconColor = '#10b981';
+          iconBgColor = 'rgba(16, 185, 129, 0.1)';
           break;
         case 'warning':
           iconColor = '#f59e0b';
+          iconBgColor = 'rgba(245, 158, 11, 0.1)';
           break;
         default:
-          iconColor = '#10b981';
+          iconColor = '#3b82f6';
+          iconBgColor = 'rgba(59, 130, 246, 0.1)';
           break;
       }
     } else {
       iconColor = tinycolor(data.iconColor).toRgbString();
+      iconBgColor = tinycolor(data.iconColor).setAlpha(0.1).toRgbString();
     }
     
     toast.custom(
@@ -176,7 +181,7 @@ const Notifications: React.FC = () => {
         >
           <Group noWrap spacing={10}>
             {data.icon && (
-              <Box className={classes.iconContainer}>
+              <Box className={classes.iconContainer} sx={{ backgroundColor: iconBgColor }}>
                 {data.showDuration ? (
                   <RingProgress
                     key={toastKey}
