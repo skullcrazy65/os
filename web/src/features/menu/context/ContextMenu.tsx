@@ -115,7 +115,7 @@ const ContextMenu: React.FC = () => {
       <ScaleFade visible={visible}>
         <Flex className={classes.header}>
           {contextMenu.menu && (
-            <HeaderButton icon="chevron-left" iconSize={16} handleClick={() => openMenu(contextMenu.menu)} />
+            <HeaderButton icon="chevron-left\" iconSize={16} handleClick={() => openMenu(contextMenu.menu)} />
           )}
           <Box className={classes.titleContainer}>
             <Text className={classes.titleText}>
