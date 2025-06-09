@@ -7,13 +7,14 @@ import type { ProgressbarProps } from '../../typings';
 
 const useStyles = createStyles((theme) => ({
   container: {
-    width: 420,
-    height: 48,
-    borderRadius: 24,
-    backgroundColor: '#243447', // accent-bg - tamno siva boja kao na slici
+    width: 460,
+    height: 60,
+    borderRadius: 8,
+    backgroundColor: '#1a2332', // secondary-bg - tamna pozadina kao na slici
     overflow: 'hidden',
     position: 'relative',
-    boxShadow: '0 4px 16px rgba(0, 0, 0, 0.3)',
+    boxShadow: '0 4px 16px rgba(0, 0, 0, 0.4)',
+    border: '1px solid #243447',
   },
   wrapper: {
     width: '100%',
@@ -26,61 +27,62 @@ const useStyles = createStyles((theme) => ({
   },
   bar: {
     height: '100%',
-    backgroundColor: '#10b981', // zelena boja kao na slici
-    borderRadius: 24,
+    backgroundColor: '#10b981', // zelena boja
     transition: 'width 0.1s linear',
+    borderRadius: '8px 0 0 8px',
   },
   labelWrapper: {
     position: 'absolute',
     display: 'flex',
-    width: 420,
-    height: 48,
+    width: 460,
+    height: 60,
     alignItems: 'center',
     justifyContent: 'space-between',
     zIndex: 2,
-    padding: '0 20px',
+    padding: '0 24px',
   },
   label: {
-    maxWidth: 300,
+    maxWidth: 320,
     textOverflow: 'ellipsis',
     overflow: 'hidden',
     whiteSpace: 'nowrap',
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: 500,
     color: '#ffffff',
     fontFamily: 'Inter, sans-serif',
   },
   percentage: {
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: 600,
     color: '#ffffff',
     fontFamily: 'Inter, sans-serif',
-    minWidth: '40px',
+    minWidth: '50px',
     textAlign: 'right',
   },
   progressDots: {
     position: 'absolute',
-    bottom: -16,
-    left: 20,
+    bottom: 12,
+    left: 24,
     display: 'flex',
-    gap: 6,
+    gap: 8,
     zIndex: 3,
   },
   dot: {
     width: 8,
     height: 8,
     borderRadius: '50%',
-    backgroundColor: 'rgba(255, 255, 255, 0.3)',
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
     transition: 'all 0.2s ease',
   },
   activeDot: {
     backgroundColor: '#10b981',
+    boxShadow: '0 0 8px rgba(16, 185, 129, 0.5)',
   },
   progressContainer: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    gap: 16,
+    gap: 0,
   }
 }));
 
@@ -150,9 +152,9 @@ const Progressbar: React.FC = () => {
                 <Text className={classes.label}>{label}</Text>
                 <Text className={classes.percentage}>{Math.round(progress)}%</Text>
               </Box>
-            </Box>
-            <Box className={classes.progressDots}>
-              {renderDots()}
+              <Box className={classes.progressDots}>
+                {renderDots()}
+              </Box>
             </Box>
           </Box>
         </ScaleFade>
