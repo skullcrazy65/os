@@ -6,6 +6,16 @@ import ScaleFade from '../../transitions/ScaleFade';
 import type { ProgressbarProps } from '../../typings';
 
 const useStyles = createStyles((theme) => ({
+  container: {
+    width: 460,
+    height: 60,
+    borderRadius: 8,
+    backgroundColor: '#1a2332', // secondary-bg - tamna pozadina kao na slici
+    overflow: 'hidden',
+    position: 'relative',
+    boxShadow: '0 4px 16px rgba(0, 0, 0, 0.4)',
+    border: '1px solid #243447',
+  },
   wrapper: {
     width: '100%',
     height: '20%',
@@ -15,28 +25,31 @@ const useStyles = createStyles((theme) => ({
     bottom: 0,
     position: 'absolute',
   },
-  container: {
+  bar: {
+    height: '100%',
+    backgroundColor: '#10b981', // zelena boja
+    transition: 'width 0.1s linear',
+    borderRadius: '8px 0 0 8px',
+  },
+  labelWrapper: {
+    position: 'absolute',
+    display: 'flex',
     width: 460,
     height: 60,
-    borderRadius: 8,
-    backgroundColor: '#1a2332', // secondary-bg - tamna pozadina kao na slici
-    position: 'relative',
-    boxShadow: '0 4px 16px rgba(0, 0, 0, 0.4)',
-    border: '1px solid #243447',
-    display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
+    zIndex: 2,
     padding: '0 24px',
   },
   label: {
-    fontSize: 16,
-    fontWeight: 500,
-    color: '#ffffff',
-    fontFamily: 'Inter, sans-serif',
     maxWidth: 320,
     textOverflow: 'ellipsis',
     overflow: 'hidden',
     whiteSpace: 'nowrap',
+    fontSize: 16,
+    fontWeight: 500,
+    color: '#ffffff',
+    fontFamily: 'Inter, sans-serif',
   },
   percentage: {
     fontSize: 16,
@@ -52,6 +65,7 @@ const useStyles = createStyles((theme) => ({
     left: 24,
     display: 'flex',
     gap: 8,
+    zIndex: 3,
   },
   dot: {
     width: 8,
@@ -64,6 +78,12 @@ const useStyles = createStyles((theme) => ({
     backgroundColor: '#10b981',
     boxShadow: '0 0 8px rgba(16, 185, 129, 0.5)',
   },
+  progressContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    gap: 0,
+  }
 }));
 
 const Progressbar: React.FC = () => {
@@ -120,16 +140,21 @@ const Progressbar: React.FC = () => {
     <>
       <Box className={classes.wrapper}>
         <ScaleFade visible={visible} onExitComplete={() => fetchNui('progressComplete')}>
-          <Box className={classes.container}>
-            {/* Tekst levo */}
-            <Text className={classes.label}>{label}</Text>
-            
-            {/* Procenat desno */}
-            <Text className={classes.percentage}>{Math.round(progress)}%</Text>
-            
-            {/* Tačkice ispod */}
-            <Box className={classes.progressDots}>
-              {renderDots()}
+          <Box className={classes.progressContainer}>
+            <Box className={classes.container}>
+              <Box
+                className={classes.bar}
+                sx={{
+                  width: `${progress}%`,
+                }}
+              />
+              <Box className={classes.labelWrapper}>
+                <Text className={classes.label}>{label}</Text>
+                <Text className={classes.percentage}>{Math.round(progress)}%</Text>
+              </Box>
+              <Box className={classes.progressDots}>
+                {renderDots()}
+              </Box>
             </Box>
           </Box>
         </ScaleFade>
