@@ -183,7 +183,7 @@ const Notifications: React.FC = () => {
             {data.icon && (
               <Box className={classes.iconContainer} sx={{ backgroundColor: iconBgColor }}>
                 {data.showDuration ? (
-                 <RingProgress
+<RingProgress
   key={toastKey}
   size={36}
   thickness={3}
@@ -197,7 +197,11 @@ const Notifications: React.FC = () => {
             animationDuration: `${duration}ms`,
           },
         }
-      : {},
+      : {
+          '> svg > circle:nth-of-type(2)': {
+            strokeDasharray: `${15.1 * 2 * Math.PI}, 0`,
+          },
+        },
   }}
   label={
     <Center>
@@ -211,6 +215,7 @@ const Notifications: React.FC = () => {
     </Center>
   }
 />
+
 
                 ) : (
                   <LibIcon 
