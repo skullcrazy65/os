@@ -9,20 +9,24 @@ const useStyles = createStyles(() => ({
   wrapper: {
     width: '100%',
     height: '100vh',
+    position: 'absolute',
+    left: 0,
+    bottom: 60, // udaljenost od dna ekrana (možeš podesiti)
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.6)', // pozadina
+    pointerEvents: 'none', // da ne blokira klikove
   },
   container: {
     display: 'flex',
     alignItems: 'center',
     gap: 10,
+    backgroundColor: 'transparent',
   },
   labelText: {
     color: '#ff1e47',
     fontWeight: 800,
-    fontSize: 24,
+    fontSize: 20,
     fontFamily: 'Arial, sans-serif',
     textShadow: '1px 1px 2px black',
   },
@@ -38,6 +42,7 @@ const useStyles = createStyles(() => ({
     transition: 'opacity 0.2s ease-in-out',
   },
 }));
+
 
 const Progressbar: React.FC = () => {
   const { classes } = useStyles();
