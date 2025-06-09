@@ -25,9 +25,9 @@ const useStyles = createStyles(() => ({
     backgroundColor: 'transparent',
   },
   labelText: {
-    color: '#1a2332',
+    color: '#fff',
     fontWeight: 700,
-    fontSize: 14,
+    fontSize: 20,
     fontFamily: 'Arial, sans-serif',
     marginBottom: 6,
   },
