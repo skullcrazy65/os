@@ -34,20 +34,21 @@ const useStyles = createStyles((theme) => ({
     bottom: 0,
     position: 'absolute',
   },
-  bar: {
-    height: '100%',
-    background: `
-      repeating-linear-gradient(
-        45deg,
-        #ff4757,
-        #ff4757 10px,
-        #ff3742 10px,
-        #ff3742 20px
-      )
-    `,
-    position: 'relative',
-    animation: `${stripeAnimation} 1s linear infinite`,
-  },
+bar: {
+  height: '100%',
+  background: `
+    repeating-linear-gradient(
+      135deg,
+      #22c55e,
+      #22c55e 10px,
+      #16a34a 10px,
+      #16a34a 20px
+    )
+  `,
+  position: 'relative',
+  animation: `${stripeAnimation} 1s linear infinite`,
+  backgroundSize: '40px 100%', // čini chevrone izraženijim
+},
   labelWrapper: {
     position: 'absolute',
     display: 'flex',
