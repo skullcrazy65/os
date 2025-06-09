@@ -200,7 +200,7 @@ const Notifications: React.FC = () => {
                     label={
                       <Center>
                         <LibIcon 
-                          icon={data.icon} s
+                          icon={data.icon} 
                           fixedWidth 
                           color={iconColor} 
                           animation={data.iconAnimation}
