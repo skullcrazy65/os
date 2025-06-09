@@ -17,9 +17,7 @@ const useStyles = createStyles((theme) => ({
     padding: '8px 12px',
     borderRadius: 10,
     fontFamily: 'Inter, sans-serif',
-    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)',
     border: `1px solid ${theme.colors.dark[4]}`, // accent-bg border
-    backdropFilter: 'blur(8px)',
     position: 'relative',
     overflow: 'hidden',
     
