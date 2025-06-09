@@ -37,9 +37,9 @@ const useStyles = createStyles(() => ({
   segment: {
     width: 24,
     height: 32,
-    backgroundColor: '#ff1e47',
+    backgroundColor: '#243447', // neaktivni segment
     clipPath: 'polygon(0% 0%, 80% 0%, 100% 50%, 80% 100%, 0% 100%)',
-    transition: 'opacity 0.2s ease-in-out',
+    transition: 'background-color 0.2s ease-in-out',
   },
 }));
 
@@ -58,7 +58,7 @@ const Progressbar: React.FC = () => {
     setVisible(true);
     setPercentage(0);
 
-    // Animacija napredovanja
+    // Pokreni animaciju progres bara
     let start = performance.now();
     const tick = (now: number) => {
       const elapsed = now - start;
@@ -90,7 +90,9 @@ const Progressbar: React.FC = () => {
                 <Box
                   key={i}
                   className={classes.segment}
-                  style={{ opacity: i < activeSegments ? 1 : 0.15 }}
+                  style={{
+                    backgroundColor: i < activeSegments ? '#10b981' : '#243447',
+                  }}
                 />
               ))}
             </Box>
