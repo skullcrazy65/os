@@ -28,7 +28,7 @@ const useStyles = createStyles(() => ({
     color: '#fff',
     fontWeight: 700,
     fontSize: 20,
-    fontFamily: 'Arial, sans-serif',
+    fontFamily: '"Inter", sans-serif',
     marginBottom: 6,
   },
   barContainer: {
@@ -38,7 +38,7 @@ const useStyles = createStyles(() => ({
   segment: {
     width: 24,
     height: 32,
-    backgroundColor: '#243447', // neaktivni segment
+    backgroundColor: '#243447',
     clipPath: 'polygon(0% 0%, 80% 0%, 100% 50%, 80% 100%, 0% 100%)',
     transition: 'background-color 0.2s ease-in-out',
   },
