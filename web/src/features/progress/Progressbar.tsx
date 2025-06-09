@@ -7,15 +7,15 @@ import type { ProgressbarProps } from '../../typings';
 
 const useStyles = createStyles(() => ({
   wrapper: {
-    width: '100%',
-    height: '100vh',
     position: 'absolute',
+    bottom: 60,
     left: 0,
-    bottom: 60, // udaljenost od dna ekrana (možeš podesiti)
+    width: '100%',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    pointerEvents: 'none', // da ne blokira klikove
+    pointerEvents: 'none',
+    zIndex: 9999,
   },
   container: {
     display: 'flex',
@@ -43,7 +43,6 @@ const useStyles = createStyles(() => ({
   },
 }));
 
-
 const Progressbar: React.FC = () => {
   const { classes } = useStyles();
   const [visible, setVisible] = React.useState(false);
@@ -54,11 +53,12 @@ const Progressbar: React.FC = () => {
   useNuiEvent('progressCancel', () => setVisible(false));
 
   useNuiEvent<ProgressbarProps>('progress', (data) => {
-    setLabel(data.label || 'LOADING');
+    setLabel(data.label || 'Loading');
     setDuration(data.duration);
     setVisible(true);
+    setPercentage(0);
 
-    // animate from 0% to 100%
+    // Animacija napredovanja
     let start = performance.now();
     const tick = (now: number) => {
       const elapsed = now - start;
@@ -79,21 +79,24 @@ const Progressbar: React.FC = () => {
 
   return visible ? (
     <Box className={classes.wrapper}>
-      <ScaleFade visible={visible}>
-        <Box className={classes.container}>
-          <Text className={classes.labelText}>{label}</Text>
-          <Text className={classes.labelText}>{percentage}%</Text>
-          <Box className={classes.barContainer}>
-            {[...Array(totalSegments)].map((_, i) => (
-              <Box
-                key={i}
-                className={classes.segment}
-                style={{ opacity: i < activeSegments ? 1 : 0.15 }}
-              />
-            ))}
-          </Box>
-        </Box>
-      </ScaleFade>
+      <Box className={classes.container}>
+        <ScaleFade visible={visible}>
+          <>
+            <Text className={classes.labelText}>
+              {label} {percentage}%
+            </Text>
+            <Box className={classes.barContainer}>
+              {[...Array(totalSegments)].map((_, i) => (
+                <Box
+                  key={i}
+                  className={classes.segment}
+                  style={{ opacity: i < activeSegments ? 1 : 0.15 }}
+                />
+              ))}
+            </Box>
+          </>
+        </ScaleFade>
+      </Box>
     </Box>
   ) : null;
 };
