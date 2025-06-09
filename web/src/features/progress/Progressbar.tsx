@@ -1,84 +1,96 @@
 import React from 'react';
-import { Box, createStyles, Text, keyframes } from '@mantine/core';
-
-const progressFill = keyframes({
-  '0%': { width: '0%' },
-  '100%': { width: '100%' },
-});
-
-const stripeMove = keyframes({
-  '0%': { backgroundPosition: '0 0' },
-  '100%': { backgroundPosition: '40px 0' },
-});
+import { Box, createStyles, Text } from '@mantine/core';
+import { useNuiEvent } from '../../hooks/useNuiEvent';
+import { fetchNui } from '../../utils/fetchNui';
+import ScaleFade from '../../transitions/ScaleFade';
+import type { ProgressbarProps } from '../../typings';
 
 const useStyles = createStyles(() => ({
+  wrapper: {
+    width: '100%',
+    height: '100vh',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.6)', // pozadina
+  },
   container: {
-    width: 600,
-    height: 30,
-    backgroundColor: '#000',
-    border: '2px solid #ff2c2c',
-    overflow: 'hidden',
-    position: 'relative',
-    fontFamily: 'monospace',
+    display: 'flex',
+    alignItems: 'center',
+    gap: 10,
   },
-  bar: {
-    height: '100%',
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    background: `
-      repeating-linear-gradient(
-        135deg,
-        #ff2c2c,
-        #ff2c2c 10px,
-        #cc1f1f 10px,
-        #cc1f1f 20px
-      )
-    `,
-    backgroundSize: '40px 100%',
-    animation: `${stripeMove} 0.8s linear infinite`,
-    zIndex: 1,
+  labelText: {
+    color: '#ff1e47',
+    fontWeight: 800,
+    fontSize: 24,
+    fontFamily: 'Arial, sans-serif',
+    textShadow: '1px 1px 2px black',
   },
-  label: {
-    zIndex: 2,
-    position: 'absolute',
-    left: 10,
-    top: '50%',
-    transform: 'translateY(-50%)',
-    color: '#ff2c2c',
-    fontWeight: 700,
-    fontSize: 18,
-    pointerEvents: 'none',
+  barContainer: {
+    display: 'flex',
+    gap: 4,
+  },
+  segment: {
+    width: 24,
+    height: 32,
+    backgroundColor: '#ff1e47',
+    clipPath: 'polygon(0% 0%, 80% 0%, 100% 50%, 80% 100%, 0% 100%)',
+    transition: 'opacity 0.2s ease-in-out',
   },
 }));
 
-type CustomProgressProps = {
-  label?: string;
-  percent?: number;
-  duration?: number; // in ms
-};
-
-const ChevronProgress: React.FC<CustomProgressProps> = ({
-  label = 'LOADING',
-  percent = 100,
-  duration = 3000,
-}) => {
+const Progressbar: React.FC = () => {
   const { classes } = useStyles();
+  const [visible, setVisible] = React.useState(false);
+  const [label, setLabel] = React.useState('');
+  const [duration, setDuration] = React.useState(0);
+  const [percentage, setPercentage] = React.useState(0);
 
-  return (
-    <Box className={classes.container}>
-      <Box
-        className={classes.bar}
-        sx={{
-          width: `${percent}%`,
-          animation: `${progressFill} ${duration}ms linear forwards, ${stripeMove} 0.8s linear infinite`,
-        }}
-      />
-      <Text className={classes.label}>
-        {label} {percent}%
-      </Text>
+  useNuiEvent('progressCancel', () => setVisible(false));
+
+  useNuiEvent<ProgressbarProps>('progress', (data) => {
+    setLabel(data.label || 'LOADING');
+    setDuration(data.duration);
+    setVisible(true);
+
+    // animate from 0% to 100%
+    let start = performance.now();
+    const tick = (now: number) => {
+      const elapsed = now - start;
+      const newPercent = Math.min(100, Math.floor((elapsed / data.duration) * 100));
+      setPercentage(newPercent);
+      if (elapsed < data.duration) {
+        requestAnimationFrame(tick);
+      } else {
+        setVisible(false);
+        fetchNui('progressComplete');
+      }
+    };
+    requestAnimationFrame(tick);
+  });
+
+  const totalSegments = 15;
+  const activeSegments = Math.floor((percentage / 100) * totalSegments);
+
+  return visible ? (
+    <Box className={classes.wrapper}>
+      <ScaleFade visible={visible}>
+        <Box className={classes.container}>
+          <Text className={classes.labelText}>{label}</Text>
+          <Text className={classes.labelText}>{percentage}%</Text>
+          <Box className={classes.barContainer}>
+            {[...Array(totalSegments)].map((_, i) => (
+              <Box
+                key={i}
+                className={classes.segment}
+                style={{ opacity: i < activeSegments ? 1 : 0.15 }}
+              />
+            ))}
+          </Box>
+        </Box>
+      </ScaleFade>
     </Box>
-  );
+  ) : null;
 };
 
-export default ChevronProgress;
+export default Progressbar;
