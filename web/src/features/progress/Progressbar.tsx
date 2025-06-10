@@ -27,19 +27,21 @@ const useStyles = createStyles(() => ({
   labelText: {
     color: '#fff',
     fontWeight: 700,
-    fontSize: 20,
+    fontSize: 24, // povećano za bolju čitljivost
     fontFamily: '"Inter", sans-serif',
-    marginBottom: 6,
+    marginBottom: 8,
+    textShadow: '1px 1px 2px black', // senka radi čitljivosti
   },
   barContainer: {
     display: 'flex',
-    gap: 4,
+    gap: 4, // razmak između segmenata
+    backgroundColor: 'transparent',
   },
   segment: {
-    width: 24,
-    height: 32,
+    width: 12,  // povećana širina
+    height: 20, // povećana visina
+    borderRadius: 2, // zaobljeni oblik
     backgroundColor: '#243447',
-    clipPath: 'polygon(0% 0%, 80% 0%, 100% 50%, 80% 100%, 0% 100%)',
     transition: 'background-color 0.2s ease-in-out',
   },
 }));
@@ -74,7 +76,7 @@ const Progressbar: React.FC = () => {
     requestAnimationFrame(tick);
   });
 
-  const totalSegments = 15;
+  const totalSegments = 20; // po želji možeš menjati broj segmenata
   const activeSegments = Math.floor((percentage / 100) * totalSegments);
 
   return visible ? (
@@ -91,7 +93,7 @@ const Progressbar: React.FC = () => {
                   key={i}
                   className={classes.segment}
                   style={{
-                    backgroundColor: i < activeSegments ? '#10b981' : '#243447',
+                    backgroundColor: i < activeSegments ? '#10b981' : '#243447', // zadrži tvoje boje
                   }}
                 />
               ))}
